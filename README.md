@@ -1,7 +1,7 @@
 # Krusch Infra MCP (SRE Boundary Server)
 
 <p align="center">
-  <img src="https://via.placeholder.com/800x400/0F172A/10B981?text=Krusch+Infra+MCP+%7C+DevOps+Boundary+Server" alt="Infra Banner" width="100%">
+  <img src="https://placehold.co/800x400/0F172A/10B981.png?text=Krusch+Infra+MCP%0ADevOps+Boundary+Server" alt="Infra Banner" width="100%">
 </p>
 
 A hyper-specialized, model-agnostic **Site Reliability Engineering (SRE) MCP Server** designed to provide Agentic Swarms with secure, heavily gated access to local Docker daemon telemetry, fleet monitoring, and automated container recovery.
@@ -32,9 +32,10 @@ If an LLM was given raw terminal access to `kruschserv`, a simple hallucination 
 The Infra MCP is designed to operate seamlessly alongside the other boundaries in the KruschDev ecosystem:
 
 - **Infra MCP (The Mechanic)**: Monitors system load, tails logs, and bounces dead containers.
-- **PG-Git (The Coder)**: Edits files, writes code, and commits changes.
-- **Signet MCP (The Liaison)**: Reads your calendar and sends text messages to your phone.
-- **The Orchestrator**: The overarching "Director" that receives your prompt, breaks it down into a DAG (Directed Acyclic Graph), and routes tasks to the appropriate boundary server.
+- **Krusch Memory MCP (The Archivist)**: Provides persistent episodic memory so the agent remembers *why* an infrastructure decision was made months ago.
+- **PG-Git (The Coder)**: Edits files, writes code, and commits changes based on system diagnostics.
+- **Signet MCP (The Liaison)**: Reads your calendar and dynamically messages you on your phone if an infrastructure emergency occurs.
+- **The Orchestrator (T3 Code DBOS Swarm)**: The overarching native Swarm Director. It receives your high-level prompt, constructs a DAG execution plan, and routes the specialized tool calls seamlessly to these isolated boundary servers.
 
 ## ⚡ Quick Start
 
