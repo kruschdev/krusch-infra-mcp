@@ -27,15 +27,18 @@ If an LLM was given raw terminal access to `prod-server`, a simple hallucination
 - **Directory Fencing**: Log-tailing and restarts require an absolute path to a verified `docker-compose.yml` file, preventing arbitrary bash injection.
 - **Database Protection**: The `restart_service` tool hard-blocks restarting core ecosystem databases (e.g., `prod_db`, `postgres`) to prevent accidental cluster degradation.
 
-## 🤝 Swarm Orchestration (Ecosystem Synergy)
+## 🤝 The DBOS Agentic Ecosystem
 
-The Infra MCP is designed to operate seamlessly alongside the other boundaries in an agentic ecosystem:
+This project is a dedicated node within the **Krusch DBOS Agentic Ecosystem**. The architecture moves away from monolithic local applications into a highly modular, distributed swarm of specialized Model Context Protocol (MCP) servers.
 
-- **Infra MCP (The Mechanic)**: Monitors system load, tails logs, and bounces dead containers.
-- **Krusch Memory MCP (The Archivist)**: Provides persistent episodic memory so the agent remembers *why* an infrastructure decision was made months ago.
-- **PG-Git (The Coder)**: Edits files, writes code, and commits changes based on system diagnostics.
-- **Signet MCP (The Liaison)**: Reads your calendar and dynamically messages you on your phone if an infrastructure emergency occurs.
-- **The Orchestrator (T3 Code DBOS Swarm)**: The overarching native Swarm Director. It receives your high-level prompt, constructs a DAG execution plan, and routes the specialized tool calls seamlessly to these isolated boundary servers.
+- **[Krusch DBOS MCP](https://github.com/kruschdev/krusch-dbos-mcp)**: The central Orchestrator and Postgres-backed state machine.
+- **[Krusch Agentic Proxy](https://github.com/kruschdev/krusch-agentic-mcp)**: The Intelligence Layer (LLM Waterfall Router).
+- **[PG-Git MCP](https://github.com/kruschdev/pg-git)**: Source Control Boundary (Code Editing & Commits).
+- **[Krusch Infra MCP](https://github.com/kruschdev/krusch-infra-mcp)**: System Ops Boundary (Docker & SRE).
+- **[Signet MCP](https://github.com/kruschdev/signet)**: Communications Boundary (Email & Calendar).
+- **[Krusch Memory MCP](https://github.com/kruschdev/krusch-memory-mcp)**: Episodic History Boundary (Project-isolated Temporal Memory).
+
+> 🗺️ **Want to see the big picture?** Read the [Ecosystem Blueprint](https://github.com/kruschdev/krusch-dbos-mcp/blob/main/ECOSYSTEM.md) for a complete diagram of how these boundaries fit together.
 
 ## ⚡ Quick Start
 
