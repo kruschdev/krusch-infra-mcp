@@ -159,7 +159,7 @@ async function main() {
       console.log("New SSE client connected");
     });
     
-    app.post("/mcp/messages", express.json(), async (req, res) => {
+    app.post("/mcp/messages", async (req, res) => {
       if (transport) {
         await transport.handlePostMessage(req, res);
       } else {
@@ -168,7 +168,7 @@ async function main() {
     });
 
     app.listen(port, () => {
-      console.log(\`Krusch Infra MCP running in Standalone SSE mode on http://localhost:\${port}\`);
+      console.log(`Krusch Infra MCP running in Standalone SSE mode on http://localhost:${port}`);
     });
   } else {
     // Standard Stdio Mode
