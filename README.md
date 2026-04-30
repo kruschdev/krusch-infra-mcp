@@ -22,14 +22,14 @@ In a robust "Director-Worker" agentic architecture, your main orchestrator shoul
 
 It is critical to understand that the Infra MCP **does not expose raw shell access**. 
 
-If an LLM was given raw terminal access to `kruschserv`, a simple hallucination could execute `rm -rf` or `docker-compose down -v`, destroying production data. Instead, this MCP implements a strict security posture:
+If an LLM was given raw terminal access to `prod-server`, a simple hallucination could execute `rm -rf` or `docker-compose down -v`, destroying production data. Instead, this MCP implements a strict security posture:
 - **No Sudo**: Executes Docker commands entirely within unprivileged user-space (`docker` group).
 - **Directory Fencing**: Log-tailing and restarts require an absolute path to a verified `docker-compose.yml` file, preventing arbitrary bash injection.
-- **Database Protection**: The `restart_service` tool hard-blocks restarting core ecosystem databases (e.g., `kruschdb`, `postgres`) to prevent accidental cluster degradation.
+- **Database Protection**: The `restart_service` tool hard-blocks restarting core ecosystem databases (e.g., `prod_db`, `postgres`) to prevent accidental cluster degradation.
 
 ## 🤝 Swarm Orchestration (Ecosystem Synergy)
 
-The Infra MCP is designed to operate seamlessly alongside the other boundaries in the KruschDev ecosystem:
+The Infra MCP is designed to operate seamlessly alongside the other boundaries in an agentic ecosystem:
 
 - **Infra MCP (The Mechanic)**: Monitors system load, tails logs, and bounces dead containers.
 - **Krusch Memory MCP (The Archivist)**: Provides persistent episodic memory so the agent remembers *why* an infrastructure decision was made months ago.
@@ -87,14 +87,14 @@ mcp_servers:
 When wired into your Agentic Proxy, the Orchestrator will seamlessly route infrastructure tasks to this server.
 
 **Example 1: Diagnosing a Crash**
-> **You:** "Is the Jellyfin server down on kruschserv?"
+> **You:** "Is the Jellyfin server down on media-server?"
 > **Orchestrator:** *[Calls `get_container_health`]* "Yes, it shows as Exited."
 > **Orchestrator:** *[Calls `tail_logs` on the jellyfin path]* "It looks like an FFmpeg transcode timeout. I will restart it."
 > **Orchestrator:** *[Calls `restart_service`]* "Jellyfin is back online."
 
 **Example 2: Fleet Status Check**
-> **You:** "Ping the homelab mesh to see what's online."
-> **Orchestrator:** *[Calls `get_fleet_status`]* "kruschserv and kruschdev are online. kruschgame is currently offline."
+> **You:** "Ping the cluster mesh to see what's online."
+> **Orchestrator:** *[Calls `get_fleet_status`]* "node-1 and node-2 are online. node-3 is currently offline."
 
 ---
 
@@ -102,7 +102,7 @@ When wired into your Agentic Proxy, the Orchestrator will seamlessly route infra
 
 | Tool | Description |
 |------|-------------|
-| `get_fleet_status` | Validates network reachability across the homelab mesh via ICMP. |
+| `get_fleet_status` | Validates network reachability across the cluster mesh via ICMP. |
 | `get_container_health` | Reads structured JSON telemetry directly from the Docker daemon. |
 | `tail_logs` | Diagnoses service crashes directly from verified compose projects. |
 | `restart_service` | Safely bounces a deadlocked service (destructive actions blocked). |
