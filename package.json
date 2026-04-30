@@ -1,14 +1,19 @@
 {
   "name": "krusch-infra-mcp",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A specialized SRE Model Context Protocol (MCP) server that grants AI agents secure, bounded access to Docker telemetry, logs, and container recovery.",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "mcp",
+    "docker",
+    "sre"
+  ],
+  "author": "kruschdev",
+  "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "cors": "^2.8.6",

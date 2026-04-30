@@ -20,11 +20,11 @@ const mcpServer = new McpServer({
 // Tool: get_fleet_status
 mcpServer.tool(
   "get_fleet_status",
-  "Pings known homelab nodes to verify network mesh integrity and availability.",
+  "Pings known nodes to verify network mesh integrity and availability.",
   {
-    nodes: z.array(z.string()).optional().describe("Optional list of hostnames or IPs to ping. Defaults to standard fleet (kruschserv, kruschgame, kruschdev).")
+    nodes: z.array(z.string()).optional().describe("Optional list of hostnames or IPs to ping. Defaults to localhost.")
   },
-  async ({ nodes = ["kruschserv", "kruschgame", "kruschdev"] }) => {
+  async ({ nodes = ["localhost"] }) => {
     const results = [];
     for (const node of nodes) {
       try {
