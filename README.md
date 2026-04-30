@@ -56,6 +56,30 @@ PORT=5446 node server.js
 ```
 *Connect your orchestrator to `http://<host>:5446/mcp/sse`*
 
+### Integration
+
+**For OpenClaw, Claude Desktop, or Cursor**, add the Krusch Infra MCP to your `mcp_client_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "krusch_infra": {
+      "command": "node",
+      "args": ["/absolute/path/to/krusch-infra-mcp/server.js"]
+    }
+  }
+}
+```
+
+**For Hermes Agent**, add the following to your `~/.hermes/config.yaml`:
+
+```yaml
+mcp_servers:
+  krusch_infra:
+    command: "node"
+    args: ["/absolute/path/to/krusch-infra-mcp/server.js"]
+```
+
 ---
 
 ## 🚀 Real-World Usage Examples
