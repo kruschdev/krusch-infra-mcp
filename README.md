@@ -1,7 +1,7 @@
 # Krusch Infra MCP (SRE Boundary Server)
 
 <p align="center">
-  <img src="https://placehold.co/800x400/0F172A/10B981.png?text=Krusch+Infra+MCP%0ADevOps+Boundary+Server" alt="Infra Banner" width="100%">
+  <strong>🛡️ DevOps Boundary Server — Secure Docker Telemetry & Recovery for Agentic Swarms</strong>
 </p>
 
 A hyper-specialized, model-agnostic **Site Reliability Engineering (SRE) MCP Server** designed to provide Agentic Swarms with secure, heavily gated access to local Docker daemon telemetry, fleet monitoring, and automated container recovery.
@@ -22,10 +22,12 @@ In a robust "Director-Worker" agentic architecture, your main orchestrator shoul
 
 It is critical to understand that the Infra MCP **does not expose raw shell access**. 
 
-If an LLM was given raw terminal access to `prod-server`, a simple hallucination could execute `rm -rf` or `docker-compose down -v`, destroying production data. Instead, this MCP implements a strict security posture:
+If an LLM was given raw terminal access to `prod-server`, a simple hallucination could execute `rm -rf` or `docker compose down -v`, destroying production data. Instead, this MCP implements a strict security posture:
 - **No Sudo**: Executes Docker commands entirely within unprivileged user-space (`docker` group).
-- **Directory Fencing**: Log-tailing and restarts require an absolute path to a verified `docker-compose.yml` file, preventing arbitrary bash injection.
-- **Database Protection**: The `restart_service` tool hard-blocks restarting core ecosystem databases (e.g., `prod_db`, `postgres`) to prevent accidental cluster degradation.
+- **No Shell Injection**: Fleet pings use `execFile` (no shell interpolation). All user inputs are validated or sanitized.
+- **Directory Fencing**: Log-tailing and restarts require an absolute path to a verified `docker-compose.yml` file. An optional allowlist (`ALLOWED_PROJECT_PATHS`) can restrict paths further.
+- **Database Protection**: The `restart_service` tool hard-blocks restarting core ecosystem databases (`kruschdb`, `postgres`, `prod_db`) to prevent accidental cluster degradation. Matching is case-insensitive.
+- **SSE Authentication**: Standalone HTTP mode requires a bearer token (`INFRA_MCP_API_KEY`) — unauthenticated requests are rejected.
 
 ## 🤝 The DBOS Agentic Ecosystem
 
@@ -46,6 +48,19 @@ This project is a dedicated node within the **Krusch DBOS Agentic Ecosystem**. T
 npm install
 ```
 
+### Configuration
+
+Copy `.env.example` to `.env` and configure:
+
+```bash
+# Required for SSE mode — bearer token for API authentication
+INFRA_MCP_API_KEY=your-secret-key-here
+
+# Optional — colon-separated list of allowed project directories
+# If unset, any directory with a docker-compose.yml is permitted
+ALLOWED_PROJECT_PATHS=/home/kruschdev/homelab/projects/annotated:/home/kruschdev/homelab/projects/pocket-lawyer
+```
+
 ### Stdio Mode (Default)
 Run standard MCP over stdio (best when spawned locally directly by DBOS or Claude Desktop):
 ```bash
@@ -57,7 +72,7 @@ Run independently so remote orchestrators can connect via HTTP across your Tails
 ```bash
 PORT=5446 node server.js
 ```
-*Connect your orchestrator to `http://<host>:5446/mcp/sse`*
+*Connect your orchestrator to `http://<host>:5446/mcp/sse` with header `Authorization: Bearer <INFRA_MCP_API_KEY>`*
 
 ### Integration
 
@@ -105,10 +120,10 @@ When wired into your Agentic Proxy, the Orchestrator will seamlessly route infra
 
 | Tool | Description |
 |------|-------------|
-| `get_fleet_status` | Validates network reachability across the cluster mesh via ICMP. |
+| `get_fleet_status` | Validates network reachability across the cluster mesh via ICMP (shell-safe `execFile`). |
 | `get_container_health` | Reads structured JSON telemetry directly from the Docker daemon. |
-| `tail_logs` | Diagnoses service crashes directly from verified compose projects. |
-| `restart_service` | Safely bounces a deadlocked service (destructive actions blocked). |
+| `tail_logs` | Diagnoses service crashes from verified compose projects (v1/v2 auto-detected). |
+| `restart_service` | Safely bounces a deadlocked service (destructive actions & DB restarts blocked). |
 
 ## License
 MIT License. Created by [kruschdev](https://github.com/kruschdev).
